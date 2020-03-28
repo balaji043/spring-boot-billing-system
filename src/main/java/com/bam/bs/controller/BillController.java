@@ -22,43 +22,31 @@ import com.bam.bs.util.Message;
 @RequestMapping("/bam/bill")
 public class BillController {
 
-    private final BillService service;
+	private final BillService service;
 
-    @Autowired
-    public BillController(BillService service) {
-        this.service = service;
-    }
+	@Autowired
+	public BillController(BillService service) {
+		this.service = service;
+	}
 
+	@PostMapping("/save")
+	public Bill saveBill(@RequestBody Bill bill) {
+		return service.saveBill(bill);
+	}
 
-    @GetMapping("/all")
-    public List<Bill> getAllBills() {
-        return service.getAllBills();
-    }
+	@PutMapping("/update")
+	public Bill updateBill(@RequestBody Bill bill) {
+		return service.updateBill(bill);
+	}
 
-    @GetMapping("/getAllBillsByBillType")
-    public List<Bill> searchBills(@RequestBody BillRequest billRequest) {
-        return service.searchBills(billRequest.getBillType());
-    }
+	@GetMapping("/search")
+	public List<Bill> searchBills(@RequestBody BillRequest billRequest) {
+		return service.searchBills(billRequest);
+	}
 
-
-    @PostMapping("/save")
-    public Bill addNewBill(@RequestBody Bill bill) {
-        return service.saveBill(bill);
-    }
-
-    @PutMapping("/update")
-    public Bill updateBill(@RequestBody Bill bill) {
-        return service.updateBill(bill);
-    }
-
-    @DeleteMapping("/delete")
-    public Message deleteBill(@RequestBody Bill bill) {
-        return service.deleteBill(bill);
-    }
-
-    @DeleteMapping("/delete/all")
-    public Message deleteAllBill(@RequestBody List<Bill> bills) {
-        return service.deleteAllBill(bills);
-    }
+	@DeleteMapping("/delete")
+	public Message deleteBill(@RequestBody Bill bill) {
+		return service.deleteBill(bill);
+	}
 
 }

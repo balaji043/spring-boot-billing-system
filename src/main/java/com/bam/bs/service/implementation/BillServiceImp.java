@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bam.bs.entity.Bill;
 import com.bam.bs.entity.BillRequest;
+import com.bam.bs.exception.CommonException;
 import com.bam.bs.repository.BillRepository;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
@@ -29,7 +30,7 @@ public class BillServiceImp implements BillService {
 		if (bill.getId() != null)
 			return bill;
 		else
-			throw new RuntimeException();
+			throw new CommonException();
 	}
 
 	@Override
