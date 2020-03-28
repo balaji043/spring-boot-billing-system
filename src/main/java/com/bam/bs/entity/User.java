@@ -6,7 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-import com.bam.bs.util.Role;
+import com.bam.bs.util.UserRole;
 
 import java.io.Serializable;
 
@@ -35,6 +35,6 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE")
-    private Role role;
+    private UserRole role;
 
 }

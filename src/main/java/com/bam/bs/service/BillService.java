@@ -14,6 +14,6 @@ public interface BillService {
 
 	List<Bill> searchBills(BillRequest billRequest);
 
-	Message deleteBill(Bill billDto);
+	Message deleteBill(Long id);
 
 }

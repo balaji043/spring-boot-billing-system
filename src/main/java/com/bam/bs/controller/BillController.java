@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,31 +23,27 @@ import com.bam.bs.util.Message;
 @RequestMapping("/bam/bill")
 public class BillController {
 
-	private final BillService service;
-
 	@Autowired
-	public BillController(BillService service) {
-		this.service = service;
-	}
+	private BillService billService;
 
 	@PostMapping("/save")
 	public Bill saveBill(@RequestBody Bill bill) {
-		return service.saveBill(bill);
+		return billService.saveBill(bill);
 	}
 
 	@PutMapping("/update")
 	public Bill updateBill(@RequestBody Bill bill) {
-		return service.updateBill(bill);
+		return billService.updateBill(bill);
 	}
 
 	@GetMapping("/search")
 	public List<Bill> searchBills(@RequestBody BillRequest billRequest) {
-		return service.searchBills(billRequest);
+		return billService.searchBills(billRequest);
 	}
 
-	@DeleteMapping("/delete")
-	public Message deleteBill(@RequestBody Bill bill) {
-		return service.deleteBill(bill);
+	@DeleteMapping("/delete/{id}")
+	public Message deleteBill(@PathVariable("id") Long id) {
+		return billService.deleteBill(id);
 	}
 
 }

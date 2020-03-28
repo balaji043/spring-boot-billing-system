@@ -1,4 +1,4 @@
-package com.bam.bs.service.implementation;
+package com.bam.bs.service.impl;
 
 import java.util.List;
 
@@ -46,8 +46,8 @@ public class BillServiceImp implements BillService {
 	}
 
 	@Override
-	public Message deleteBill(Bill bill) {
-		billRepository.delete(bill);
+	public Message deleteBill(Long id) {
+		billRepository.deleteById(id);
 		return new Message(Messages.SUCCESS);
 	}
 
