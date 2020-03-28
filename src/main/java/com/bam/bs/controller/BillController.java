@@ -1,16 +1,21 @@
 package com.bam.bs.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-import com.bam.bs.dto.BillDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bam.bs.entity.Bill;
 import com.bam.bs.entity.BillRequest;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController()
@@ -31,49 +36,14 @@ public class BillController {
     }
 
     @GetMapping("/getAllBillsByBillType")
-    public List<Bill> getAllBillsByBillType(@RequestBody BillRequest billRequest) {
-        return service.getAllBillsByBillType(billRequest.getBillType());
+    public List<Bill> searchBills(@RequestBody BillRequest billRequest) {
+        return service.searchBills(billRequest.getBillType());
     }
 
-    @GetMapping("/getAllBillsByBillTypeAndBetweenDatesWithCustomer")
-    public List<Bill> getAllBillsByBillTypeAndBetweenDatesWithCustomer(@RequestBody BillRequest billRequest) {
-        return service.getAllBillsByBillTypeAndBetweenDatesWithCustomer(billRequest.getCustomer(), billRequest.getBillType(), billRequest.getStartDate(), billRequest.getEndDate());
-    }
-
-    @GetMapping("/getAllBillsByBillTypeAndWithCustomer")
-    public List<Bill> getAllBillsByBillTypeAndWithCustomer(@RequestBody BillRequest billRequest) {
-        return service.getAllBillsByBillTypeAndWithCustomer(billRequest.getBillType(), billRequest.getCustomer());
-    }
-
-    @GetMapping("/getAllBillsByBillTypeAndWithSearchText")
-    public List<BillDto> getAllBillsByBillTypeAndWithSearchText(@RequestBody BillRequest billRequest) {
-        //TODO: Have to do
-        return new ArrayList<>();
-    }
-
-    @GetMapping("/getAllBillsByBillTypeAndBetweenDates")
-    public List<BillDto> getAllBillsByBillTypeAndBetweenDates(@RequestBody BillRequest billRequest) {
-        return null;
-    }
-
-    @GetMapping("/getAllBillsBetweenDates")
-    public BillDto[] getAllBillsBetweenDates(@RequestBody BillRequest billRequest) {
-        return null;
-    }
-
-    @GetMapping("/getAllBillsByBillTypeAndCustomerType")
-    public List<BillDto> getAllBillsByBillTypeAndCustomerType(@RequestBody BillRequest billRequest) {
-        return null;
-    }
-
-    @GetMapping("/getBillByInvoiceName")
-    public BillDto getBillByInvoiceName(String invoice) {
-        return null;
-    }
 
     @PostMapping("/save")
     public Bill addNewBill(@RequestBody Bill bill) {
-        return service.addNewBill(bill);
+        return service.saveBill(bill);
     }
 
     @PutMapping("/update")

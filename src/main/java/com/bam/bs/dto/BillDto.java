@@ -1,15 +1,14 @@
 package com.bam.bs.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDate;
 import java.util.Set;
 
 import com.bam.bs.entity.Customer;
-import com.bam.bs.entity.Product;
 import com.bam.bs.entity.User;
 import com.bam.bs.util.BillType;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
