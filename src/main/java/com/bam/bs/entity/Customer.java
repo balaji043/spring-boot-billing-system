@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 
 import com.bam.bs.util.CustomerType;
 
+
 import java.io.Serializable;
 
 @Entity

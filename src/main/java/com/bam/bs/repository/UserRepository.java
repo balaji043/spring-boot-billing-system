@@ -7,5 +7,5 @@ import com.bam.bs.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-
+    void deleteAllById(Long[] id);
 }

@@ -2,13 +2,14 @@ package com.bam.bs.entity;
 
 import com.bam.bs.util.PerValue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
+import java.io.Serializable;
 
 @Entity
 @Table(name = "Product")
@@ -43,9 +44,8 @@ public class Product implements Serializable {
     @Column(name = "PER_VALUE")
     private PerValue perValue;
 
-    @ManyToOne
+    @ManyToOne(optional = false, targetEntity = Bill.class)
     @JsonIgnore
     private Bill bill;
-
 
 }
