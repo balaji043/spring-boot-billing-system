@@ -55,4 +55,5 @@ public class UserServiceImpl implements UserService {
     private UserDto mapUser(User user) {
         return modelMapper.map(user, UserDto.class);
     }
+    
 }

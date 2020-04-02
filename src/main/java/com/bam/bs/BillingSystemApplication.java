@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -33,7 +34,8 @@ public class BillingSystemApplication implements CommandLineRunner {
     private UserRepository userRepository;
     @Autowired
     private BillRepository billRepository;
-
+    @Autowired
+	PasswordEncoder encoder;
     public static void main(String[] args) {
         SpringApplication.run(BillingSystemApplication.class, args);
     }
@@ -69,13 +71,13 @@ public class BillingSystemApplication implements CommandLineRunner {
         User admin = new User();
         admin.setName("Admin");
         admin.setUserName("admin");
-        admin.setPassword("123");
+        admin.setPassword(encoder.encode("123"));
         admin.setRole(UserRole.ADMIN);
 
         User employee = new User();
         employee.setName("Employee");
         employee.setUserName("emp");
-        employee.setPassword("123");
+        admin.setPassword(encoder.encode("123"));
         employee.setRole(UserRole.EMPLOYEE);
 
         userRepository.saveAll(Stream.of(admin, employee).collect(Collectors.toList()));

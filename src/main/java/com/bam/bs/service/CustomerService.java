@@ -17,5 +17,4 @@ public interface CustomerService {
 
 	Message deleteCustomer(Long[] ids);
 
-
 }

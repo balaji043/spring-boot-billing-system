@@ -13,8 +13,8 @@ import com.bam.bs.util.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController()
 @RequestMapping("/bill")
 public class BillController {
@@ -49,28 +49,29 @@ public class BillController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@ApiOperation(value = "Save Bill")
-	public Bill saveBill(@Valid @RequestBody BillDto bill, BindingResult bindingResult, Model model)
-			throws BindException {
-		if (bindingResult.hasErrors()) {
-			throw new BindException(bindingResult);
-		}
+	public Bill saveBill(@Valid @RequestBody BillDto bill, BindingResult bindingResult, Model model) {
 		return billService.saveBill(bill);
 	}
 
 	@PutMapping
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+
 	@ApiOperation(value = "Update Bill")
 	public Bill updateBill(@RequestBody BillDto bill) {
 		return billService.updateBill(bill);
 	}
 
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@ApiOperation(value = "Search Bills")
 	public List<BillDto> searchBills(String billRequestString) {
 		return billService.searchBills(Utils.readValue(billRequestString, BillRequest.class));
 	}
 
 	@DeleteMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	@ApiOperation(value = "Delete Bill")
 	public Message deleteBill(@RequestParam("ids[]") Long[] ids) {
 		return billService.deleteBill(ids);

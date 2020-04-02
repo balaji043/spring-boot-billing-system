@@ -44,12 +44,9 @@ public class BillServiceImpl implements BillService {
 		Optional<User> user = userRepository.findById(billDto.getUserId());
 
 		if (customer.isPresent() && user.isPresent()) {
-
 			bill.setCustomer(customer.get());
 			bill.setUser(user.get());
-
 			billRepository.save(bill);
-
 			if (bill.getId() != null)
 				return bill;
 			else
