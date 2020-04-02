@@ -1,13 +1,18 @@
 package com.bam.bs.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.bam.bs.dto.BillDto;
 import com.bam.bs.dto.BillRequest;
 import com.bam.bs.entity.Bill;
+import com.bam.bs.entity.Customer;
+import com.bam.bs.entity.User;
 import com.bam.bs.exception.CommonException;
 import com.bam.bs.repository.BillRepository;
+import com.bam.bs.repository.CustomerRepository;
+import com.bam.bs.repository.UserRepository;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
 import com.bam.bs.util.Messages;
@@ -23,17 +28,34 @@ public class BillServiceImpl implements BillService {
 	private BillRepository billRepository;
 
 	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
 	ModelMapper modelMapper;
 
 	@Override
 	public Bill saveBill(BillDto billDto) {
 		Bill bill = mapBill(billDto);
 		bill.getProducts().stream().forEach(e -> e.setBill(bill));
-		billRepository.save(bill);
-		if (bill.getId() != null)
-			return bill;
-		else
-			throw new CommonException();
+		Optional<Customer> customer = customerRepository.findById(billDto.getCustomerId());
+		Optional<User> user = userRepository.findById(billDto.getUserId());
+
+		if (customer.isPresent() && user.isPresent()) {
+
+			bill.setCustomer(customer.get());
+			bill.setUser(user.get());
+
+			billRepository.save(bill);
+
+			if (bill.getId() != null)
+				return bill;
+			else
+				throw new CommonException();
+		}
+		throw new CommonException();
 	}
 
 	@Override

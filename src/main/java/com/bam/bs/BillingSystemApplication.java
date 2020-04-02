@@ -100,8 +100,8 @@ public class BillingSystemApplication implements CommandLineRunner {
 
         Bill bill = new Bill();
         bill.setBillType(billType);
-        bill.setUserId(user.getId());
-        bill.setCustomerId(customer.getId());
+        bill.setUser(user);
+        bill.setCustomer(customer);
         bill.setInvoiceName(invoice);
         bill.setCreationDate(LocalDate.now());
 

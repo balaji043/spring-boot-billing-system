@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 import com.bam.bs.util.BillType;
 
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -33,11 +32,11 @@ public class Bill implements Serializable {
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
     private Set<Product> products;
 
-    @Column(name = "USER_ID")
-    private Long userId;
+    @ManyToOne
+    private User user;
 
-    @Column(name = "CUSTOMER_ID")
-    private Long customerId;
+    @ManyToOne
+    private Customer customer;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "BILL_TYPE")
