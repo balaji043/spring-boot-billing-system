@@ -49,7 +49,6 @@ public class BillController {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
 	@ApiOperation(value = "Save Bill")
 	public Bill saveBill(@Valid @RequestBody BillDto bill, BindingResult bindingResult, Model model) {
 		return billService.saveBill(bill);

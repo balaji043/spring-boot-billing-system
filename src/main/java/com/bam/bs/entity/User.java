@@ -34,10 +34,10 @@ public class User implements Serializable {
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", unique = true)
     private String userName;
 
-    @Column(name = "EMAIL_ID")
+    @Column(name = "EMAIL_ID", unique = true)
     private String emailId;
 
     @Column(name = "PASSWORD")

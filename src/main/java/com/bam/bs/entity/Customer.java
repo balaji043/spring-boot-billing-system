@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 
 import com.bam.bs.util.CustomerType;
 
-
 import java.io.Serializable;
 
 @Entity
@@ -23,20 +22,20 @@ public class Customer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID",unique = true,nullable = false)
+    @Column(name = "ID", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "CITY")
     private String city;
 
-    @Column(name = "GST_NO",unique = true,length = 15)
+    @Column(name = "GST_NO", unique = true, length = 15)
     @Pattern(regexp = "^[0-9]{15}$")
     private String gstNo;
 
-    @Column(name = "NAME",unique = true,nullable = false)
+    @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "PHONE_NUMBER",unique = true,length = 10)
+    @Column(name = "PHONE_NUMBER", unique = true, length = 10)
     @Pattern(regexp = "^[0-9]{10}$")
     private String phoneNumber;
 
@@ -46,6 +45,5 @@ public class Customer implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "CUSTOMER_TYPE")
     private CustomerType customerType;
-
 
 }

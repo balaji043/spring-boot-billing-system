@@ -1,5 +1,6 @@
 package com.bam.bs.service.impl;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,19 +41,15 @@ public class BillServiceImpl implements BillService {
 	public Bill saveBill(BillDto billDto) {
 		Bill bill = mapBill(billDto);
 		bill.getProducts().stream().forEach(e -> e.setBill(bill));
-		Optional<Customer> customer = customerRepository.findById(billDto.getCustomerId());
-		Optional<User> user = userRepository.findById(billDto.getUserId());
-
-		if (customer.isPresent() && user.isPresent()) {
-			bill.setCustomer(customer.get());
-			bill.setUser(user.get());
+		billRepository.save(bill);
+		if (bill.getId() != null) {
+			String s = bill.getCreationDate().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+			bill.setInvoiceName(String.format("BS-%s%05d", s, bill.getId()));
 			billRepository.save(bill);
-			if (bill.getId() != null)
-				return bill;
-			else
-				throw new CommonException();
+			return bill;
+		} else {
+			throw new CommonException();
 		}
-		throw new CommonException();
 	}
 
 	@Override
@@ -60,7 +57,10 @@ public class BillServiceImpl implements BillService {
 		Bill bill = mapBill(billDto);
 		bill.getProducts().stream().forEach(e -> e.setBill(bill));
 		billRepository.save(bill);
-		return bill;
+		if (bill.getId() != null)
+			return bill;
+		else
+			throw new CommonException();
 	}
 
 	@Override
@@ -75,11 +75,30 @@ public class BillServiceImpl implements BillService {
 	}
 
 	private Bill mapBill(BillDto billDto) {
-		return modelMapper.map(billDto, Bill.class);
+		Bill bill = modelMapper.map(billDto, Bill.class);
+		Optional<Customer> customer = customerRepository.findById(billDto.getCustomerId());
+		Optional<User> user = userRepository.findById(billDto.getUserId());
+
+		if (customer.isPresent() && user.isPresent()) {
+			bill.setCustomer(customer.get());
+			bill.setUser(user.get());
+		} else {
+			if (!customer.isPresent() && !user.isPresent()) {
+				throw new CommonException("CustomerId and UserId  are Not Present");
+			} else if (!customer.isPresent()) {
+				throw new CommonException("CustomerId is Not Present");
+			} else {
+				throw new CommonException("UserId is Not Present");
+			}
+		}
+		return bill;
 	}
 
 	private BillDto mapBill(Bill bill) {
-		return modelMapper.map(bill, BillDto.class);
+		BillDto billDto = modelMapper.map(bill, BillDto.class);
+		billDto.setCustomerId(bill.getCustomer().getId());
+		billDto.setUserId(bill.getUser().getId());
+		return billDto;
 	}
 
 }

@@ -7,6 +7,7 @@ import com.bam.bs.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
-    void deleteAllById(Long[] id);
+   
+    void deleteAllById(Long[] ids);
 
 }

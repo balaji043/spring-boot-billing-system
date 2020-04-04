@@ -77,7 +77,7 @@ public class BillingSystemApplication implements CommandLineRunner {
         User employee = new User();
         employee.setName("Employee");
         employee.setUserName("emp");
-        admin.setPassword(encoder.encode("123"));
+        employee.setPassword(encoder.encode("123"));
         employee.setRole(UserRole.EMPLOYEE);
 
         userRepository.saveAll(Stream.of(admin, employee).collect(Collectors.toList()));
