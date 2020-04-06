@@ -28,6 +28,10 @@ public class CustomerDto implements Serializable {
 
     private String street;
 
+    private String state;
+
+    private String zipCode;
+
     private CustomerType customerType;
 
 }

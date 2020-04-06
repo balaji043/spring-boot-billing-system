@@ -35,20 +35,24 @@ public class BillingSystemApplication implements CommandLineRunner {
     @Autowired
     private BillRepository billRepository;
     @Autowired
-	PasswordEncoder encoder;
+    PasswordEncoder encoder;
+
     public static void main(String[] args) {
         SpringApplication.run(BillingSystemApplication.class, args);
     }
 
     @Override
     public void run(String... args) {
+        String state = "Tamil Nadu";
+        String zipCode = "123123";
         Customer balaji = new Customer();
         balaji.setName("Balaji");
         balaji.setCity("Perambalur");
         balaji.setStreet("Muthu nagar");
         balaji.setPhoneNumber("7894561234");
         balaji.setCustomerType(CustomerType.GST);
-        balaji.setGstNo("123456789012345");
+        balaji.setState(state);
+        balaji.setZipCode(zipCode);
 
         Customer edmund = new Customer();
         edmund.setName("Edmund");
@@ -56,15 +60,19 @@ public class BillingSystemApplication implements CommandLineRunner {
         edmund.setStreet("Some Street");
         edmund.setPhoneNumber("1234567899");
         edmund.setCustomerType(CustomerType.NON_GST);
-        edmund.setGstNo(null);
+        edmund.setGstNo("123456789012345");
+        edmund.setState(state);
+        edmund.setZipCode(zipCode);
 
         Customer malavan = new Customer();
         malavan.setName("Malavan");
         malavan.setCity("Trichy");
         malavan.setStreet("Some Street");
         malavan.setPhoneNumber("4567891231");
+        malavan.setGstNo("123456789012345");
         malavan.setCustomerType(CustomerType.NON_GST);
-        malavan.setGstNo(null);
+        malavan.setState(state);
+        malavan.setZipCode(zipCode);
 
         customerRepository.saveAll(Stream.of(balaji, edmund, malavan).collect(Collectors.toList()));
 

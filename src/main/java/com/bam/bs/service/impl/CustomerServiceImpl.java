@@ -26,18 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
 	ModelMapper modelMapper;
 
 	@Override
-	public Customer saveCustomer(CustomerDto customerDto) {
+	public CustomerDto saveCustomer(CustomerDto customerDto) {
 		Customer customer = mapCustomer(customerDto);
 		customerRepository.save(customer);
 		if (customer.getId() != null)
-			return customer;
+			return mapCustomer(customer);
 		else
 			throw new CommonException();
 	}
 
 	@Override
-	public Customer updateCustomer(CustomerDto customerDto) {
-		return customerRepository.save(mapCustomer(customerDto));
+	public CustomerDto updateCustomer(CustomerDto customerDto) {
+		return mapCustomer(customerRepository.save(mapCustomer(customerDto)));
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Message deleteCustomer(Long[] id) {
-		customerRepository.deleteAllById(id);
+	public Message deleteCustomer(Long[] ids) {
+		customerRepository.deleteAllById(ids);
 		return new Message(Messages.SUCCESS);
 	}
 

@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.bam.bs.dto.CustomerDto;
 import com.bam.bs.dto.CustomerRequest;
-import com.bam.bs.entity.Customer;
 import com.bam.bs.util.Message;
 
 public interface CustomerService {
 
-	Customer saveCustomer(CustomerDto customerDto);
+	CustomerDto saveCustomer(CustomerDto customerDto);
 
-	Customer updateCustomer(CustomerDto customerDto);
+	CustomerDto updateCustomer(CustomerDto customerDto);
 
 	List<CustomerDto> searchCustomers(CustomerRequest customerRequest);
 

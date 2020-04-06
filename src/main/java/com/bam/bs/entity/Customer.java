@@ -28,7 +28,7 @@ public class Customer implements Serializable {
     @Column(name = "CITY")
     private String city;
 
-    @Column(name = "GST_NO", unique = true, length = 15)
+    @Column(name = "GST_NO", unique = false, length = 15)
     @Pattern(regexp = "^[0-9]{15}$")
     private String gstNo;
 
@@ -42,8 +42,14 @@ public class Customer implements Serializable {
     @Column(name = "STREET")
     private String street;
 
+    @Column(name = "STATE")
+    private String state;
+
+    @Column(name = "ZIP_CODE")
+    private String zipCode;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "CUSTOMER_TYPE")
+    @Column(name = "CUSTOMER_TYPE", nullable = false)
     private CustomerType customerType;
 
 }
