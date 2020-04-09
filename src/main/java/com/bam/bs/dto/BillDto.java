@@ -34,8 +34,8 @@ public class BillDto implements Serializable {
 
     private Set<ProductDto> products;
 
-    private Long userId;
+    private UserDto user;
 
-    private Long customerId;
+    private CustomerDto customer;
 
 }

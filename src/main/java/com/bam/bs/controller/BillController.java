@@ -4,12 +4,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.bam.bs.dto.ApiResponse;
 import com.bam.bs.dto.BillDto;
 import com.bam.bs.dto.BillRequest;
+import com.bam.bs.dto.SearchBillResponse;
 import com.bam.bs.entity.Bill;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
-import com.bam.bs.util.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +21,6 @@ import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -62,11 +62,10 @@ public class BillController {
 		return billService.updateBill(bill);
 	}
 
-	@GetMapping
-	@PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
+	@PostMapping("/search")
 	@ApiOperation(value = "Search Bills")
-	public List<BillDto> searchBills(String billRequestString) {
-		return billService.searchBills(Utils.readValue(billRequestString, BillRequest.class));
+	public ApiResponse<List<SearchBillResponse>> searchBills(@RequestBody BillRequest billRequest) {
+		return new ApiResponse<>(billService.searchBills(billRequest), "200", "Success");
 	}
 
 	@DeleteMapping

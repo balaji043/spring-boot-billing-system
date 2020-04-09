@@ -3,7 +3,6 @@ package com.bam.bs.validators;
 import java.util.Objects;
 
 import com.bam.bs.dto.BillDto;
-import com.bam.bs.util.Utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,10 +33,10 @@ public class SaveBillRequestValidator implements Validator {
         if (Objects.isNull(billDto.getCreationDate())) {
             errors.rejectValue("CreationDate", "Cannot be Null");
         }
-        if (Utils.isNullOrZero(billDto.getCustomerId())) {
+        if (Objects.isNull(billDto.getCustomer())) {
             errors.rejectValue("CustomerId", "Cannot be Null or Less Than or Equal to Zero");
         }
-        if (Utils.isNullOrZero(billDto.getUserId())) {
+        if (Objects.isNull(billDto.getUser())) {
             errors.rejectValue("UserId", "Cannot be Null or Less Than or Equal to Zero");
         }
         billDto.getProducts().forEach(product -> ValidationUtils.invokeValidator(productValidator, product, errors));

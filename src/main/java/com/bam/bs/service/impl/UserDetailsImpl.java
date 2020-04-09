@@ -11,37 +11,24 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.bam.bs.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
-    
+
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-
-    private String username;
-
-    private String email;
-
-    @JsonIgnore
-    private String password;
+    private User user;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String username, String email, String password,
-            Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public UserDetailsImpl(User user, Collection<? extends GrantedAuthority> authorities) {
+        this.user = user;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = Stream.of(new SimpleGrantedAuthority(user.getRole().toString()))
                 .collect(Collectors.toList());
-        return new UserDetailsImpl(user.getId(), user.getUserName(), user.getEmailId(), user.getPassword(),
-                authorities);
+        return new UserDetailsImpl(user, authorities);
     }
 
     @Override
@@ -49,22 +36,26 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public Long getId() {
-        return id;
+        return user.getId();
     }
 
     public String getEmail() {
-        return email;
+        return user.getEmailId();
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUserName();
     }
 
     @Override
@@ -93,8 +84,8 @@ public class UserDetailsImpl implements UserDetails {
             return true;
         if (o == null || getClass() != o.getClass())
             return false;
-        UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(id, user.id);
+        UserDetailsImpl comparativeUser = (UserDetailsImpl) o;
+        return Objects.equals(this.user.getId(), comparativeUser.getId());
     }
 
 }

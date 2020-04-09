@@ -3,12 +3,16 @@ package com.bam.bs.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import com.bam.bs.dto.CustomerDto;
 import com.bam.bs.dto.CustomerRequest;
 import com.bam.bs.entity.Customer;
 import com.bam.bs.exception.CommonException;
 import com.bam.bs.repository.CustomerRepository;
 import com.bam.bs.service.CustomerService;
+import com.bam.bs.util.CustomerType;
 import com.bam.bs.util.Message;
 import com.bam.bs.util.Messages;
 
@@ -18,6 +22,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -42,7 +49,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<CustomerDto> searchCustomers(CustomerRequest customerRequest) {
-		return customerRepository.findAll().stream().map(this::mapCustomer).collect(Collectors.toList());
+		List<Customer> customers;
+		if (customerRequest.getCustomerType().equals(CustomerType.BOTH)) {
+			customers = customerRepository.findAll();
+		} else {
+			customers = customerRepository.findAllByCustomerType(customerRequest.getCustomerType());
+		}
+		return customers.stream().map(this::mapCustomer).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<CustomerDto> fuzzyCustomers(String name) {
+		return customerRepository.findByNameLikeIgnoreCase(name).stream().map(this::mapCustomer).collect(Collectors.toList());
 	}
 
 	@Override
@@ -58,4 +76,5 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerDto mapCustomer(Customer customer) {
 		return modelMapper.map(customer, CustomerDto.class);
 	}
+
 }

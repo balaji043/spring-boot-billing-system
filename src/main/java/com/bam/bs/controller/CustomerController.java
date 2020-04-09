@@ -45,6 +45,12 @@ public class CustomerController {
 		return customerService.searchCustomers(customerRequestString);
 	}
 
+	@PostMapping("/fuzzy")
+	@ApiOperation(value = "Search Customers")
+	public List<CustomerDto> fuzzySearchCustomers(@RequestBody String customerRequestString) {
+		return customerService.fuzzyCustomers(customerRequestString);
+	}
+
 	@DeleteMapping
 	@ApiOperation(value = "Delete Customer")
 	public Message deleteCustomer(@RequestParam("ids[]") Long[] ids) {

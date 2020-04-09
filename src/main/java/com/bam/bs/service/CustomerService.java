@@ -14,6 +14,8 @@ public interface CustomerService {
 
 	List<CustomerDto> searchCustomers(CustomerRequest customerRequest);
 
+	List<CustomerDto> fuzzyCustomers(String customerRequest);
+
 	Message deleteCustomer(Long[] ids);
 
 }

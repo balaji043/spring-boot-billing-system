@@ -16,7 +16,6 @@ public class CustomerRequest implements Serializable {
      * SerialVersionUID
      */
     private static final long serialVersionUID = 5539026824991785458L;
-    Boolean isAllCustomerRequest;
     CustomerType customerType;
 
 }

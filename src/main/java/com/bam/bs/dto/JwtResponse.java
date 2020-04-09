@@ -1,5 +1,6 @@
 package com.bam.bs.dto;
 
+import com.bam.bs.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,17 +15,11 @@ public class JwtResponse {
 
     private String token;
     private String type = "Bearer";
-    private Long id;
-    private String username;
-    private String email;
-    private String role;
+    private User user;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, String role) {
+    public JwtResponse(String accessToken, User user) {
         this.token = accessToken;
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.role = role;
+        this.user = user;
     }
 
 }
