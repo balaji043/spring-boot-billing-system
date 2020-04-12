@@ -63,7 +63,7 @@ public class Bill implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date creationDate;
 
-    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Product> products;
 
     @ManyToOne
