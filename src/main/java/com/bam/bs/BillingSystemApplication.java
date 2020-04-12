@@ -1,16 +1,17 @@
 package com.bam.bs;
 
-import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.bam.bs.entity.Bill;
-import com.bam.bs.entity.Customer;
-import com.bam.bs.entity.Product;
-import com.bam.bs.entity.User;
-import com.bam.bs.repository.BillRepository;
-import com.bam.bs.repository.CustomerRepository;
-import com.bam.bs.repository.UserRepository;
+import com.bam.bs.dto.BillDto;
+import com.bam.bs.dto.CustomerDto;
+import com.bam.bs.dto.ProductDto;
+import com.bam.bs.dto.UserDto;
+import com.bam.bs.service.BillService;
+import com.bam.bs.service.CustomerService;
+import com.bam.bs.service.UserService;
 import com.bam.bs.util.BillType;
 import com.bam.bs.util.CustomerType;
 import com.bam.bs.util.PerValue;
@@ -29,13 +30,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class BillingSystemApplication implements CommandLineRunner {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
-    private BillRepository billRepository;
+    private BillService billService;
     @Autowired
     PasswordEncoder encoder;
+    Calendar cal = Calendar.getInstance();
 
     public static void main(String[] args) {
         SpringApplication.run(BillingSystemApplication.class, args);
@@ -45,91 +47,98 @@ public class BillingSystemApplication implements CommandLineRunner {
     public void run(String... args) {
         String state = "Tamil Nadu";
         String zipCode = "123123";
-        Customer balaji = new Customer();
+        CustomerDto balaji = new CustomerDto();
         balaji.setName("Balaji");
         balaji.setCity("Perambalur");
         balaji.setStreet("Muthu nagar");
         balaji.setPhoneNumber("7894561234");
-        balaji.setCustomerType(CustomerType.GST);
+        balaji.setCustomerType(CustomerType.NON_GST);
         balaji.setState(state);
         balaji.setZipCode(zipCode);
 
-        Customer edmund = new Customer();
+        CustomerDto edmund = new CustomerDto();
         edmund.setName("Edmund");
         edmund.setCity("Thanjarvur");
         edmund.setStreet("Some Street");
         edmund.setPhoneNumber("1234567899");
-        edmund.setCustomerType(CustomerType.NON_GST);
+        edmund.setCustomerType(CustomerType.GST);
         edmund.setGstNo("123456789012345");
         edmund.setState(state);
         edmund.setZipCode(zipCode);
 
-        Customer malavan = new Customer();
+        CustomerDto malavan = new CustomerDto();
         malavan.setName("Malavan");
         malavan.setCity("Trichy");
         malavan.setStreet("Some Street");
         malavan.setPhoneNumber("4567891231");
-        malavan.setGstNo("123456789012345");
-        malavan.setCustomerType(CustomerType.NON_GST);
+        malavan.setGstNo("123456789012346");
+        malavan.setCustomerType(CustomerType.GST);
         malavan.setState(state);
         malavan.setZipCode(zipCode);
 
-        customerRepository.saveAll(Stream.of(balaji, edmund, malavan).collect(Collectors.toList()));
+        balaji = customerService.saveCustomer(balaji);
+        edmund = customerService.saveCustomer(edmund);
+        malavan = customerService.saveCustomer(malavan);
 
-        User admin = new User();
+        UserDto admin = new UserDto();
         admin.setName("Admin");
         admin.setUserName("admin");
         admin.setPassword(encoder.encode("123"));
         admin.setRole(UserRole.ADMIN);
 
-        User employee = new User();
+        UserDto employee = new UserDto();
         employee.setName("Employee");
         employee.setUserName("emp");
         employee.setPassword(encoder.encode("123"));
         employee.setRole(UserRole.EMPLOYEE);
 
-        userRepository.saveAll(Stream.of(admin, employee).collect(Collectors.toList()));
+        admin = userService.saveUser(admin);
+        employee = userService.saveUser(employee);
 
-        Bill bill1 = getBill(BillType.GST, balaji, admin, "Invoice1");
-        Bill bill2 = getBill(BillType.NON_GST, malavan, employee, "Invoice2");
-        Bill bill3 = getBill(BillType.GST, edmund, admin, "Invoice3");
-        Bill bill4 = getBill(BillType.NON_GST, balaji, employee, "Invoice4");
-        Bill bill5 = getBill(BillType.GST, malavan, admin, "Invoice5");
-        Bill bill6 = getBill(BillType.NON_GST, edmund, employee, "Invoice6");
-        Bill bill7 = getBill(BillType.GST, malavan, admin, "Invoice7");
-        Bill bill8 = getBill(BillType.NON_GST, balaji, employee, "Invoice8");
-        Bill bill9 = getBill(BillType.GST, edmund, admin, "Invoice9");
-        Bill bill10 = getBill(BillType.NON_GST, malavan, employee, "Invoice10");
+        BillDto bill1 = getBill(BillType.GST, balaji, admin, "Invoice1", getDate(1));
+        BillDto bill2 = getBill(BillType.NON_GST, malavan, employee, "Invoice2", getDate(2));
+        BillDto bill3 = getBill(BillType.GST, edmund, admin, "Invoice3",getDate(3));
+        BillDto bill4 = getBill(BillType.NON_GST, balaji, employee, "Invoice4", getDate(4));
+        BillDto bill5 = getBill(BillType.GST, malavan, admin, "Invoice5", getDate(5));
+        BillDto bill6 = getBill(BillType.NON_GST, edmund, employee, "Invoice6", getDate(6));
+        BillDto bill7 = getBill(BillType.GST, malavan, admin, "Invoice7", getDate(7));
+        BillDto bill8 = getBill(BillType.NON_GST, balaji, employee, "Invoice8", getDate(8));
+        BillDto bill9 = getBill(BillType.GST, edmund, admin, "Invoice9", getDate(9));
+        BillDto bill10 = getBill(BillType.NON_GST, malavan, employee, "Invoice10", getDate(10));
 
-        billRepository.saveAll(Stream.of(bill1, bill2, bill3, bill4, bill5, bill6, bill7, bill8, bill9, bill10)
-                .collect(Collectors.toSet()));
+        billService.saveBill(bill1);
+        billService.saveBill(bill2);
+        billService.saveBill(bill3);
+        billService.saveBill(bill4);
+        billService.saveBill(bill5);
+        billService.saveBill(bill6);
+        billService.saveBill(bill7);
+        billService.saveBill(bill8);
+        billService.saveBill(bill9);
+        billService.saveBill(bill10);
 
     }
 
-    private Bill getBill(BillType billType, Customer customer, User user, String invoice) {
+    private BillDto getBill(BillType billType, CustomerDto customer, UserDto user, String invoice, Date date) {
 
-        Bill bill = new Bill();
+        BillDto bill = new BillDto();
         bill.setBillType(billType);
         bill.setUser(user);
         bill.setCustomer(customer);
         bill.setInvoiceName(invoice);
-        bill.setCreationDate(LocalDate.now());
+        bill.setCreationDate(date);
 
-        Product p1 = getProduct("P1");
-        p1.setBill(bill);
-        Product p2 = getProduct("P2");
-        p2.setBill(bill);
-        Product p3 = getProduct("P3");
-        p3.setBill(bill);
-        Product p4 = getProduct("P4");
-        p4.setBill(bill);
+        ProductDto p1 = getProduct("P1");
+        ProductDto p2 = getProduct("P2");
+        ProductDto p3 = getProduct("P3");
+        ProductDto p4 = getProduct("P4");
 
         bill.setProducts(Stream.of(p1, p2, p3, p4).collect(Collectors.toSet()));
         return bill;
     }
 
-    private Product getProduct(String name) {
-        Product product = new Product();
+    private ProductDto getProduct(String name) {
+        ProductDto product = new ProductDto();
         product.setDescription(name);
         product.setHsnCode(name + "HSN");
         product.setPerValue(PerValue.BOX);
@@ -140,4 +149,10 @@ public class BillingSystemApplication implements CommandLineRunner {
         return product;
     }
 
+    Date getDate(int month) {
+        cal.set(Calendar.YEAR, 2020);
+        cal.set(Calendar.MONTH, month);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        return cal.getTime();
+    }
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.bam.bs.dto.UserDto;
 import com.bam.bs.dto.UserRequest;
-import com.bam.bs.entity.User;
 import com.bam.bs.service.UserService;
 import com.bam.bs.util.Message;
 import com.bam.bs.util.Utils;
@@ -34,13 +33,13 @@ public class UserController {
 
 	@PostMapping
 	@ApiOperation(value = "Save User")
-	public User saveUser(@RequestBody UserDto userDto) {
+	public UserDto saveUser(@RequestBody UserDto userDto) {
 		return userService.saveUser(userDto);
 	}
 
 	@PutMapping
 	@ApiOperation(value = "Update User")
-	public User updateUser(@RequestBody UserDto userDto) {
+	public UserDto updateUser(@RequestBody UserDto userDto) {
 		return userService.updateUser(userDto);
 	}
 

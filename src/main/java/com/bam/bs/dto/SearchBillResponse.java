@@ -1,7 +1,12 @@
 package com.bam.bs.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
+
+import com.bam.bs.config.CustomDateDeSerializer;
+import com.bam.bs.config.CustomDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +29,9 @@ public class SearchBillResponse implements Serializable {
     private String customerName;
     private String place;
     private String invoice;
-    private LocalDate date;
+    @JsonDeserialize(using = CustomDateDeSerializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date date;
     private String invoiceAmount;
     private String userName;
 

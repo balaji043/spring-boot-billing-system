@@ -1,14 +1,14 @@
 package com.bam.bs.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
+import com.bam.bs.config.CustomDateDeSerializer;
+import com.bam.bs.config.CustomDateSerializer;
 import com.bam.bs.util.BillType;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,10 +25,9 @@ public class BillDto implements Serializable {
     private Long id;
 
     private String invoiceName;
-
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    private LocalDate creationDate;
+    @JsonDeserialize(using = CustomDateDeSerializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date creationDate;
 
     private BillType billType;
 

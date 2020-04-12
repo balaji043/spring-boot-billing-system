@@ -1,14 +1,15 @@
 package com.bam.bs.dto;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 
+import com.bam.bs.config.CustomDateDeSerializer;
+import com.bam.bs.config.CustomDateSerializer;
 import com.bam.bs.entity.Customer;
-import com.bam.bs.util.BillType;
-import com.bam.bs.util.CustomerType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import io.swagger.annotations.ApiModel;
 
@@ -16,12 +17,19 @@ import io.swagger.annotations.ApiModel;
 @Setter
 @ApiModel
 public class BillRequest {
+
     Boolean isAllBillRequest;
-    LocalDate startDate;
-    LocalDate endDate;
-    BillType billType;
-    Long customerId;
-    Long userId;
-    CustomerType customerType;
+
+    @JsonDeserialize(using = CustomDateDeSerializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    Date startDate;
+
+    @JsonDeserialize(using = CustomDateDeSerializer.class)
+    @JsonSerialize(using = CustomDateSerializer.class)
+    Date endDate;
+
     Customer customer;
+
+    String invoiceNumber;
+
 }

@@ -1,9 +1,18 @@
 package com.bam.bs.service.impl;
 
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import com.bam.bs.dto.BillDto;
 import com.bam.bs.dto.BillRequest;
@@ -15,6 +24,7 @@ import com.bam.bs.repository.BillRepository;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
 import com.bam.bs.util.Messages;
+import com.bam.bs.util.Utils;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +32,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BillServiceImpl implements BillService {
+	private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+	@Autowired
+	private EntityManager entityManager;
 
 	@Autowired
 	private BillRepository billRepository;
@@ -35,7 +49,7 @@ public class BillServiceImpl implements BillService {
 		bill.getProducts().stream().forEach(e -> e.setBill(bill));
 		billRepository.save(bill);
 		if (bill.getId() != null) {
-			String s = bill.getCreationDate().format(DateTimeFormatter.ofPattern("ddMMyyyy"));
+			String s = simpleDateFormat.format(bill.getCreationDate());
 			bill.setInvoiceName(String.format("BS-%s%05d", s, bill.getId()));
 			billRepository.save(bill);
 			return bill;
@@ -55,14 +69,41 @@ public class BillServiceImpl implements BillService {
 			throw new CommonException();
 	}
 
+	public List<Bill> search(BillRequest billRequest) {
+
+		List<Predicate> predicates = new ArrayList<>();
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+		CriteriaQuery<Bill> criteriaQuery = criteriaBuilder.createQuery(Bill.class);
+		Root<Bill> billRoot = criteriaQuery.from(Bill.class);
+
+		if (!Utils.isNullOrEmpty(billRequest.getInvoiceNumber())) {
+			predicates.add(criteriaBuilder.equal(billRoot.get("invoiceName"), billRequest.getInvoiceNumber()));
+		} else {
+			if (Objects.nonNull(billRequest.getCustomer()) && Objects.nonNull(billRequest.getCustomer().getId())) {
+				predicates.add(
+						criteriaBuilder.equal(billRoot.get("customer").get("id"), billRequest.getCustomer().getId()));
+			}
+			if (Objects.nonNull(billRequest.getStartDate()) && Objects.nonNull(billRequest.getEndDate())) {
+				predicates.add(criteriaBuilder.between(billRoot.get("creationDate"), billRequest.getStartDate(),
+						billRequest.getEndDate()));
+			}
+		}
+		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
+		EntityGraph<?> entityGraph = entityManager.getEntityGraph("graph.Bill");
+
+		TypedQuery<Bill> typedQuery = entityManager.createQuery(criteriaQuery).setHint("javax.persistence.fetchgraph",
+				entityGraph);
+
+		return typedQuery.getResultList();
+	}
+
 	@Override
 	public List<SearchBillResponse> searchBills(BillRequest billRequest) {
 		List<SearchBillResponse> billResponses = new ArrayList<>();
-		List<Bill> billList = null;
-		if (billRequest.getIsAllBillRequest().booleanValue()) {
-			billList = billRepository.findAll();
-		} else {
-			throw new CommonException("Haven't implemented!");
+		List<Bill> billList = search(billRequest);
+		if (Utils.isNullOrEmpty(billList)) {
+			throw new CommonException("No records found");
 		}
 		billList.stream().forEach(bill -> {
 			SearchBillResponse billResponse = new SearchBillResponse();
@@ -73,6 +114,7 @@ public class BillServiceImpl implements BillService {
 			billResponse.setPlace(bill.getCustomer().getCity());
 			billResponse.setInvoiceAmount(getInvoiceAmount(bill));
 			billResponse.setUserName(bill.getUser().getName());
+			billResponses.add(billResponse);
 		});
 		return billResponses;
 	}

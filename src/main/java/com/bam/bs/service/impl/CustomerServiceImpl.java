@@ -60,7 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<CustomerDto> fuzzyCustomers(String name) {
-		return customerRepository.findByNameLikeIgnoreCase(name).stream().map(this::mapCustomer).collect(Collectors.toList());
+		return customerRepository.findByNameLikeIgnoreCase(name).stream().map(this::mapCustomer)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -69,11 +70,11 @@ public class CustomerServiceImpl implements CustomerService {
 		return new Message(Messages.SUCCESS);
 	}
 
-	private Customer mapCustomer(CustomerDto customerDto) {
+	public Customer mapCustomer(CustomerDto customerDto) {
 		return modelMapper.map(customerDto, Customer.class);
 	}
 
-	private CustomerDto mapCustomer(Customer customer) {
+	public CustomerDto mapCustomer(Customer customer) {
 		return modelMapper.map(customer, CustomerDto.class);
 	}
 
