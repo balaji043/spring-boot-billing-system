@@ -17,8 +17,9 @@ import javax.persistence.criteria.Root;
 import com.bam.bs.dto.BillDto;
 import com.bam.bs.dto.BillRequest;
 import com.bam.bs.dto.SearchBillResponse;
-import com.bam.bs.model.*;
 import com.bam.bs.exception.CommonException;
+import com.bam.bs.model.Bill;
+import com.bam.bs.model.Product;
 import com.bam.bs.repository.BillRepository;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
@@ -53,7 +54,7 @@ public class BillServiceImpl implements BillService {
 			billRepository.save(bill);
 			return bill;
 		} else {
-			throw new CommonException();
+			throw new CommonException("Save failed", "OPERATION_FAILED");
 		}
 	}
 
@@ -65,7 +66,7 @@ public class BillServiceImpl implements BillService {
 		if (bill.getId() != null)
 			return bill;
 		else
-			throw new CommonException();
+			throw new CommonException("Update failed", "OPERATION_FAILED");
 	}
 
 	public List<Bill> search(BillRequest billRequest) {
@@ -91,7 +92,7 @@ public class BillServiceImpl implements BillService {
 		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 		EntityGraph<?> entityGraph = entityManager.getEntityGraph("graph.Bill");
 
-		TypedQuery<Bill> typedQuery = entityManager.createQuery(criteriaQuery).setHint("javax.persistence.fetchgraph",
+		TypedQuery<Bill> typedQuery = entityManager.createQuery(criteriaQuery).setHint("javax.persistence.loadgraph",
 				entityGraph);
 
 		return typedQuery.getResultList();
@@ -102,7 +103,7 @@ public class BillServiceImpl implements BillService {
 		List<SearchBillResponse> billResponses = new ArrayList<>();
 		List<Bill> billList = search(billRequest);
 		if (Utils.isNullOrEmpty(billList)) {
-			throw new CommonException("No records found");
+			throw new CommonException("No records found", "NOT_FOUND");
 		}
 		billList.stream().forEach(bill -> {
 			SearchBillResponse billResponse = new SearchBillResponse();

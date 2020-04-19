@@ -38,7 +38,7 @@ public class Utils {
             return OBJECT_MAPPER.readValue(content, valueType);
         } catch (IOException e) {
             log.error("{}", e);
-            throw new CommonException("Error happened while reading from json");
+            throw new CommonException("Error happened while reading from json", "SerializationFailed");
         }
     }
 }

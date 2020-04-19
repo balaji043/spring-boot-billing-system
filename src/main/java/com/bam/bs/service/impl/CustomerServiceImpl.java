@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 		if (customer.getId() != null)
 			return mapCustomer(customer);
 		else
-			throw new CommonException();
+			throw new CommonException("Save failed", "OPERATION_FAILED");
 	}
 
 	@Override

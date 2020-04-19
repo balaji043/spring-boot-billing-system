@@ -18,7 +18,7 @@ public class CustomDateDeSerializer extends JsonDeserializer<Date> {
         try {
             return simpleDateFormat.parse(jsonparser.getText());
         } catch (ParseException e) {
-            throw new CommonException("Error occured when Deserializing the date");
+            throw new CommonException("Error occured when Deserializing the date", "SerializationFailed");
         }
     }
 }

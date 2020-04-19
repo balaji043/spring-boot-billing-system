@@ -1,5 +1,8 @@
 package com.bam.bs.exception;
 
+import lombok.Getter;
+
+@Getter
 public class CommonException extends RuntimeException {
 
 	/**
@@ -7,11 +10,10 @@ public class CommonException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = -5821789144577589829L;
 
-	public CommonException() {
-		super();
-	}
+	private final String code;
 
-	public CommonException(String m) {
+	public CommonException(String m, String code) {
 		super(m);
+		this.code = code;
 	}
 }
