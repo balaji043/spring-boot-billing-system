@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.bam.bs.config.CustomDateDeSerializer;
 import com.bam.bs.config.CustomDateSerializer;
-import com.bam.bs.entity.Customer;
+import com.bam.bs.model.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

@@ -1,4 +1,4 @@
-package com.bam.bs.entity;
+package com.bam.bs.model;
 
 import java.io.Serializable;
 

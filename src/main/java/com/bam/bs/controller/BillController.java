@@ -8,7 +8,7 @@ import com.bam.bs.dto.ApiResponse;
 import com.bam.bs.dto.BillDto;
 import com.bam.bs.dto.BillRequest;
 import com.bam.bs.dto.SearchBillResponse;
-import com.bam.bs.entity.Bill;
+import com.bam.bs.model.*;
 import com.bam.bs.service.BillService;
 import com.bam.bs.util.Message;
 

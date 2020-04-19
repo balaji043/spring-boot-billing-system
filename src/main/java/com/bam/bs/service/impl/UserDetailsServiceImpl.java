@@ -1,6 +1,6 @@
 package com.bam.bs.service.impl;
 
-import com.bam.bs.entity.User;
+import com.bam.bs.model.*;
 import com.bam.bs.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

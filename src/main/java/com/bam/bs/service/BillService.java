@@ -3,7 +3,7 @@ package com.bam.bs.service;
 import java.util.List;
 
 import com.bam.bs.dto.BillDto;
-import com.bam.bs.entity.Bill;
+import com.bam.bs.model.*;
 import com.bam.bs.dto.BillRequest;
 import com.bam.bs.dto.SearchBillResponse;
 import com.bam.bs.util.Message;

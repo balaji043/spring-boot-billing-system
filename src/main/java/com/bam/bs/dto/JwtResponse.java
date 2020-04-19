@@ -1,6 +1,6 @@
 package com.bam.bs.dto;
 
-import com.bam.bs.entity.User;
+import com.bam.bs.model.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

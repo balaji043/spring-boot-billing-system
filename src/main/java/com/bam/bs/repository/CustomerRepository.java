@@ -2,7 +2,7 @@ package com.bam.bs.repository;
 
 import java.util.List;
 
-import com.bam.bs.entity.Customer;
+import com.bam.bs.model.*;
 import com.bam.bs.util.CustomerType;
 
 import org.springframework.data.jpa.repository.JpaRepository;

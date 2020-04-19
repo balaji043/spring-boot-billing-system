@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import com.bam.bs.entity.User;
+import com.bam.bs.model.*;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

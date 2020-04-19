@@ -1,6 +1,6 @@
 package com.bam.bs.repository;
 
-import com.bam.bs.entity.Bill;
+import com.bam.bs.model.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

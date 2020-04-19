@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 
 import com.bam.bs.dto.CustomerDto;
 import com.bam.bs.dto.CustomerRequest;
-import com.bam.bs.entity.Customer;
+import com.bam.bs.model.*;
 import com.bam.bs.exception.CommonException;
 import com.bam.bs.repository.CustomerRepository;
 import com.bam.bs.service.CustomerService;

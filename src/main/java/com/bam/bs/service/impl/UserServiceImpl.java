@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.bam.bs.dto.UserDto;
 import com.bam.bs.dto.UserRequest;
-import com.bam.bs.entity.User;
+import com.bam.bs.model.*;
 import com.bam.bs.repository.UserRepository;
 import com.bam.bs.service.UserService;
 import com.bam.bs.util.Message;
