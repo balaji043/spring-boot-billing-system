@@ -92,7 +92,7 @@ public class BillServiceImpl implements BillService {
 		criteriaQuery.where(predicates.toArray(new Predicate[] {}));
 		EntityGraph<?> entityGraph = entityManager.getEntityGraph("graph.Bill");
 
-		TypedQuery<Bill> typedQuery = entityManager.createQuery(criteriaQuery).setHint("javax.persistence.loadgraph",
+		TypedQuery<Bill> typedQuery = entityManager.createQuery(criteriaQuery).setHint("javax.persistence.fetchgraph",
 				entityGraph);
 
 		return typedQuery.getResultList();
